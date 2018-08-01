@@ -1,6 +1,32 @@
 # Backend Coding Exercise
 The following is intended as a coding exercise for backend developers.
 
+## Avero Reporting API
+
+Your task is to build a reporting API on top of point of sale data extracted from Avero customer restaurants. You will retreive the source data from our existing POS APIs, and implement a reporting API to calculate and deliver a number of common metrics.
+
+## Business Requirements:
+- Extract all data from the POS API. [POS API Documentation](#pos-api-documentation)
+    - The api endpoints are documented below. 
+    - There are a fixed number of businesses with a fixed number of menu items, employees, labor entries, checks and ordered items.
+    - You will need to persist this data in a database or persistence layer of your choice.
+    
+- Develop a model for reporting and aggregation. 
+    - The [report types](#report-types) that you will need to calculate are provided above along with the corresponding formula for calculating it. [Report Types](#report-types)
+    - API consumers will use your Reporting API to build their reporting dashboard.
+      
+- Develop the http Reporting API which is documented below. [Reporting API Documentation](#reporting-data-api-documentation) 
+    - Some Assertions         
+        - Each business has a ```hours``` property and is open every day. All checks and labor will be within these business hours. 
+        - Each check is associated with one and only one business and employee.
+        - Each check is closed and has a ```closed_at``` property indicating the time it was closed.
+        - Each check is closed in the same hour it was open. ie. 2:00pm - 2:59pm
+        - Each check may have any number of ordered items associated with it.
+        - Each ordered item has a set boolean property ```voided``` indicating if the check is voided. 
+        - Each ordered item has a ```created_at``` date. created_at is to be used when calculating reports.
+        
+Given start and end dates, a business id, a report type, and a time interval, you will need to calculate the report for the report type over this date range and aggregated by the time interval.
+
 ## Avero Point of Sale System API
 
 A restaurant Point of Sale (POS) is a system for managing the transactions within a restaurant. If you have ever seen a server enter your table’s order into a touch screen and then run your credit card through it at the end of the meal, they were interacting with the POS.  Many POS systems expose an API for 3rd party integration.
@@ -165,27 +191,6 @@ Labor entries are used to calculate labor related reports.
      
      Employee Gross Sales = $20
 
-## Exercise Requirements:
-- Extract all data from the POS API. [POS API Documentation](#pos-api-documentation)
-    - The api endpoints are documented below. 
-    - There are a fixed number of businesses with a fixed number of menu items, employees, labor entries, checks and ordered items.
-    - You will need to persist this data in a database or persistence layer of your choice.
-    
-- Develop a model for reporting and aggregation. 
-    - The [report types](#report-types) that you will need to calculate are provided above along with the corresponding formula for calculating it. [Report Types](#report-types)
-    - API consumers will use your Reporting API to build their reporting dashboard.
-      
-- Develop the http Reporting API which is documented below. [Reporting API Documentation](#reporting-data-api-documentation) 
-    - Some Assertions         
-        - Each business has a ```hours``` property and is open every day. All checks and labor will be within these business hours. 
-        - Each check is associated with one and only one business and employee.
-        - Each check is closed and has a ```closed_at``` property indicating the time it was closed.
-        - Each check is closed in the same hour it was open. ie. 2:00pm - 2:59pm
-        - Each check may have any number of ordered items associated with it.
-        - Each ordered item has a set boolean property ```voided``` indicating if the check is voided. 
-        - Each ordered item has a ```created_at``` date. created_at is to be used when calculating reports.
-        
-Given start and end dates, a business id, a report type, and a time interval, you will need to calculate the report for the report type over this date range and aggregated by the time interval.
 
 ## Expectations:
 - You may use any language, library, database, and framework that you wish. Ultimately, you should choose whatever tools will best enable you to deliver a quality product.
