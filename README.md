@@ -8,205 +8,11 @@ Your task is to build a reporting API on top of point of sale data extracted fro
 ## Business Requirements:
 - Deliver an http-based reporting api that implements a single `/reporting` endpoint
     - A consumer should be able to provide a date range, a bucketing time interval, a business id, and a report type (defined below).
-    - The api should calculate and return a report for the given parameters.
+    - The api should return a report, calculated from the source POS data.
 - The reporting API should not spam the source api for each request.
     - POS data should be extracted from the source API and stored separately - this could be in a reporting database, flat files, or in an in-memory data structure.
 - You DO NOT need to account for synchronizing with the source api over time.
     - There are a fixed number of businesses with a fixed number of menu items, employees, labor entries, checks and ordered items; they will not change.
-    
-### Report Types
-#### Labor Cost Percentage
- - Abbreviated as **LCP**
- - Labor cost percentage is the percentage of your revenue that pays for labor. 
- - Calculate labor cost percentage: **Labor Cost Percentage = Labor / Sales**
- 
-     Here’s an example: 
-      
-     Let’s say you’ve added all money paid out to hourly employees over a week. 
-     The total was $5,500. During that same time period, you brought in $22,000 worth of revenue. 
-       
-     Labor Cost Percentage = $5,500 / $22,000
-      
-     Labor Cost Percentage = 25%
-
-#### Food Cost Percentage 
- - Abbreviated as **FCP**
- - Food cost percentage is the difference between what it costs to produce an item and its price on the menu. 
- - Calculate food cost percentage: **Food Cost Percentage = Item Cost / Selling Prices**
-  
-      Here’s an example: 
-      
-      A burger is priced at $13 and costs $4 to make.
-     
-      Food Cost Percentage = $4 / $13
-      
-      Food Cost Percentage = 31% 
-
-#### Employee Gross Sales
- - Abbreviated as **EGS**
- - Employee gross sales is the sum of the of the price charged for each item the employee sold. Voided Items excluded.
- - Calculate employee gross sales: **Employee Gross Sales = Sum(Selling Prices)**
- 
-     Here’s an example:
-     
-     A burger is priced at $13 and a shake $7.
-     
-     Employee Gross Sales = $13 + $7
-     
-     Employee Gross Sales = $20
-    
-## Technical Requirements
-
-The reporting API should implement a single endpoint for generating reports.
-### GET /reporting
-Supports the following query parameters, all of which are required.
-- **business_id** (uuid) - The id of the business to run this report for.
-- **report** (LCP | FCP | SBE) - The abbreviated name of the report to run.
-- **timeInterval** (hour | day | week | month) - The time interval to aggregate the data.
-- **start** (date) - The start date used to constrain the results. ISO-8601 date
-- **end** (date) - The end date used to constrain the results. ISO-8601 date.
-
-### Report Type Abbreviations
-- [Labor Cost Percentage = **LCP**](#Labor-Cost-Percentage)
-- [Food Cost Percentage = **FCP**](#Food-Cost-Percentage )
-- [Employee Gross Sales = **EGS**](#Employee-Gross-Sales ) 
-
-### LCP:
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
-
-example response body of LCP by hour:
-```json
-{
-  "report": "LCP",
-  "timeInterval": "hour",
-  "data": [
-    {
-      "timeFrame": {
-          "start": "2018-05-03T15:00:00.000Z",
-          "end": "2018-05-03T16:00:00.000Z"
-      },
-      "value": 13.0 
-    },
-    {
-      "timeFrame": {
-          "start": "2018-05-03T16:00:00.000Z",
-          "end": "2018-05-03T17:00:00.000Z"
-      },
-      "value": 54.0 
-    }, 
-    {
-      "timeFrame": {
-          "start": "2018-05-03T17:00:00.000Z",
-          "end": "2018-05-03T18:00:00.000Z"
-      },
-      "value": 23.0 
-    }
- ]
-}
-```
-
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=day&start=2018-05-01T00:00:00.000Z&end=2018-05-02T00:00:00.000Z```
-
-example response body of LCP by day:    
-```json
-{
-  "report": "LCP",
-  "timeInterval": "day",
-  "data": [
-    {
-      "timeFrame": {
-          "start": "2018-05-01T00:00:00.000Z",
-          "end": "2018-05-02T00:00:00.000Z"
-      },
-      "value": 40.0
-    }
- ]
-}
-```
-
-### FCP:
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=FCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
-
-example response body of FCP by hour:
-```json
-{
-  "report": "FCP",
-  "timeInterval": "hour",
-  "data": [
-    {
-      "timeFrame": {
-        "start": "2018-05-03T15:00:00.000",
-        "end": "2018-05-03T16:00:00.000Z"
-      },
-      "value": 50.0
-    },
-    {
-      "timeFrame": {
-        "start": "2018-05-03T16:00:00.000",
-        "end": "2018-05-03T17:00:00.000Z"
-      },
-      "value": 70.0
-    },
-    {
-      "timeFrame": {
-        "start": "2018-05-03T17:00:00.000",
-        "end": "2018-05-03T18:00:00.000Z"
-      },
-      "value": 10.0
-    }
-    
- ]
-}
-```
-
-
-
-### EGS:
-
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=EGS&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
-
-example response body of EGS by hour:
-```json
-{
-  "report": "EGS",
-  "timeInterval": "hour",
-  "data": [
-    {
-      "timeFrame": {
-        "start": "2018-05-03T15:00:00.000",
-        "end": "2018-05-03T16:00:00.000Z"
-      },
-      "employee": "Andy Bolden",
-      "value": 200.00  
-    },
-    {
-      "timeFrame": {
-        "start": "2018-05-03T16:00:00.000",
-        "end": "2018-05-03T17:00:00.000Z"
-      },
-      "employee": "Andy Bolden",
-      "value": 100.00  
-    },
-    {
-      "timeFrame": {
-        "start": "2018-05-03T15:00:00.000",
-        "end": "2018-05-03T16:00:00.000Z"
-      },
-      "employee": "Sam Wise",
-      "value": 80.00  
-    },
-    {
-      "timeFrame": {
-        "start": "2018-05-03T16:00:00.000",
-        "end": "2018-05-03T17:00:00.000Z"
-      },
-      "employee": "Sam Wise",
-      "value": 300.00  
-    }
-    
- ]
-}
-```
 
 ## Expectations:
 - You may use any language, library, database, and framework that you wish. Ultimately, you should choose whatever tools will best enable you to deliver a quality product.
@@ -240,6 +46,9 @@ For this exercise you will be retrieving sales and labor data for a set hypothet
 ---
 
 ## POS Entities
+
+These are the data models that you will retrieve from the source POS API, and back the reporting domain.
+
 ### Businesses 
 A business represents a restaurant.
 ```json
@@ -345,7 +154,51 @@ Represents the time and cost for an employee's shift.
 You can think of an labor entry as a work shift and the given rate of pay at the time the employee worked that shift.
 
 Labor entries are used to calculate labor related reports. 
+         
+       
+## Report Types
+
+These are the techical definitions of the reports that your api will need to implement
+
+### Labor Cost Percentage
+ - Abbreviated as **LCP**
+ - Labor cost percentage is the percentage of your revenue that pays for labor. 
+ - Calculate labor cost percentage: **Labor Cost Percentage = Labor / Sales**
+ 
+     Here’s an example: 
+      
+     Let’s say you’ve added all money paid out to hourly employees over a week. 
+     The total was $5,500. During that same time period, you brought in $22,000 worth of revenue. 
+       
+     Labor Cost Percentage = $5,500 / $22,000
+      
+     Labor Cost Percentage = 25%
+
+### Food Cost Percentage 
+ - Abbreviated as **FCP**
+ - Food cost percentage is the difference between what it costs to produce an item and its price on the menu. 
+ - Calculate food cost percentage: **Food Cost Percentage = Item Cost / Selling Prices**
+  
+      Here’s an example: 
+      
+      A burger is priced at $13 and costs $4 to make.
      
+      Food Cost Percentage = $4 / $13
+      
+      Food Cost Percentage = 31% 
+
+### Employee Gross Sales
+ - Abbreviated as **EGS**
+ - Employee gross sales is the sum of the of the price charged for each item the employee sold. Voided Items excluded.
+ - Calculate employee gross sales: **Employee Gross Sales = Sum(Selling Prices)**
+ 
+     Here’s an example:
+     
+     A burger is priced at $13 and a shake $7.
+     
+     Employee Gross Sales = $13 + $7
+     
+     Employee Gross Sales = $20
 
 # POS API DOCUMENTATION
 
@@ -516,6 +369,160 @@ example response body:
       }
    ]
 }   
+```
+
+## Technical Requirements
+
+You are responsible for implementing and delivering a reporting api that meets the following technical requirements.
+
+### GET /reporting
+Supports the following query parameters, all of which are required.
+- **business_id** (uuid) - The id of the business to run this report for.
+- **report** (LCP | FCP | SBE) - The abbreviated name of the report to run.
+- **timeInterval** (hour | day | week | month) - The time interval to aggregate the data.
+- **start** (date) - The start date used to constrain the results. ISO-8601 date
+- **end** (date) - The end date used to constrain the results. ISO-8601 date.
+
+### Report Type Abbreviations
+- [Labor Cost Percentage = **LCP**](#Labor-Cost-Percentage)
+- [Food Cost Percentage = **FCP**](#Food-Cost-Percentage )
+- [Employee Gross Sales = **EGS**](#Employee-Gross-Sales ) 
+
+### LCP:
+example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
+
+example response body of LCP by hour:
+```json
+{
+  "report": "LCP",
+  "timeInterval": "hour",
+  "data": [
+    {
+      "timeFrame": {
+          "start": "2018-05-03T15:00:00.000Z",
+          "end": "2018-05-03T16:00:00.000Z"
+      },
+      "value": 13.0 
+    },
+    {
+      "timeFrame": {
+          "start": "2018-05-03T16:00:00.000Z",
+          "end": "2018-05-03T17:00:00.000Z"
+      },
+      "value": 54.0 
+    }, 
+    {
+      "timeFrame": {
+          "start": "2018-05-03T17:00:00.000Z",
+          "end": "2018-05-03T18:00:00.000Z"
+      },
+      "value": 23.0 
+    }
+ ]
+}
+```
+
+example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=day&start=2018-05-01T00:00:00.000Z&end=2018-05-02T00:00:00.000Z```
+
+example response body of LCP by day:    
+```json
+{
+  "report": "LCP",
+  "timeInterval": "day",
+  "data": [
+    {
+      "timeFrame": {
+          "start": "2018-05-01T00:00:00.000Z",
+          "end": "2018-05-02T00:00:00.000Z"
+      },
+      "value": 40.0
+    }
+ ]
+}
+```
+
+### FCP:
+example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=FCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
+
+example response body of FCP by hour:
+```json
+{
+  "report": "FCP",
+  "timeInterval": "hour",
+  "data": [
+    {
+      "timeFrame": {
+        "start": "2018-05-03T15:00:00.000",
+        "end": "2018-05-03T16:00:00.000Z"
+      },
+      "value": 50.0
+    },
+    {
+      "timeFrame": {
+        "start": "2018-05-03T16:00:00.000",
+        "end": "2018-05-03T17:00:00.000Z"
+      },
+      "value": 70.0
+    },
+    {
+      "timeFrame": {
+        "start": "2018-05-03T17:00:00.000",
+        "end": "2018-05-03T18:00:00.000Z"
+      },
+      "value": 10.0
+    }
+    
+ ]
+}
+```
+
+
+
+### EGS:
+
+example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=EGS&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
+
+example response body of EGS by hour:
+```json
+{
+  "report": "EGS",
+  "timeInterval": "hour",
+  "data": [
+    {
+      "timeFrame": {
+        "start": "2018-05-03T15:00:00.000",
+        "end": "2018-05-03T16:00:00.000Z"
+      },
+      "employee": "Andy Bolden",
+      "value": 200.00  
+    },
+    {
+      "timeFrame": {
+        "start": "2018-05-03T16:00:00.000",
+        "end": "2018-05-03T17:00:00.000Z"
+      },
+      "employee": "Andy Bolden",
+      "value": 100.00  
+    },
+    {
+      "timeFrame": {
+        "start": "2018-05-03T15:00:00.000",
+        "end": "2018-05-03T16:00:00.000Z"
+      },
+      "employee": "Sam Wise",
+      "value": 80.00  
+    },
+    {
+      "timeFrame": {
+        "start": "2018-05-03T16:00:00.000",
+        "end": "2018-05-03T17:00:00.000Z"
+      },
+      "employee": "Sam Wise",
+      "value": 300.00  
+    }
+    
+ ]
+}
 ```
 
 
