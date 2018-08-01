@@ -8,11 +8,11 @@ For this exercise you will be retrieving sales and labor data for a set hypothet
 
 ## Table of contents
 
-- [POS Entities](#POS-Entities)
-- [Report Types](#Report-Types)
-- [Exercise](#Exercise)
-- [POS API Documentation](#POS-API-DOCUMENTATION)
-- [Reporting API Documentation](#Reporting-Data-API-DOCUMENTATION)
+- [POS Entities](#pos-entities)
+- [Report Types](#report-types)
+- [Exercise](#exercise)
+- [POS API Documentation](#pos-api-documentation)
+- [Reporting API Documentation](#reporting-data-api-documentation)
 
 ---
 
@@ -174,17 +174,17 @@ Labor entries are used to calculate labor related reports.
 
 
 ## Exercise
-- Extract all data from the POS API. [POS API Documentation](#POS-API-DOCUMENTATION)
+- Extract all data from the POS API. [POS API Documentation](#pos-api-documentation)
     - The api endpoints are documented below. 
     - There are a fixed number of businesses with a fixed number of menu items, employees, labor entries, checks and ordered items.
     - You will need to persist this data in a database of persistence layer of your choice.
     
 - You will need to develop a model for reporting and aggregation. 
-  The [report types](#Report-Types) that you will need to calculate are provided above along with the corresponding formula for calculating it. [Report Types](#Report-Types)
+  The [report types](#report-types) that you will need to calculate are provided above along with the corresponding formula for calculating it. [Report Types](#report-types)
 
 API users will be consuming your Reporting API to build our reporting dashboard.
       
-- You will need to develop the http Reporting API which is documented below. [Reporting API Documentation](#Reporting-Data-API-DOCUMENTATION) 
+- You will need to develop the http Reporting API which is documented below. [Reporting API Documentation](#reporting-data-api-documentation) 
     - Some Assertions         
         - Each business has a ```hours``` property and is open every day. All checks and labor will be within these business hours. 
         - Each check is associated with one and only one business and employee.
