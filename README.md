@@ -16,7 +16,7 @@ For this exercise you will be retrieving sales and labor data for a set hypothet
 
 ---
 
-##POS Entities
+## POS Entities
 ### Businesses 
 - A business represent a restaurant is a POS.
 ```json
