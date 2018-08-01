@@ -18,7 +18,7 @@ For this exercise you will be retrieving sales and labor data for a set hypothet
 
 ## POS Entities
 ### Businesses 
-- A business represent a restaurant is a POS.
+A business represents a restaurant.
 ```json
 {
      "id":"b2aeb27b-c85c-4ad8-83d4-d9511063d418",
@@ -30,9 +30,7 @@ For this exercise you will be retrieving sales and labor data for a set hypothet
 ```
 
 ### Check
-checks represents:
-- Party at the restaurant.
-- Single guest who placed an order at restaurant.
+A check represents a set of ordered items, and the associatedn individual payment.
 ```json
 {
      "id":"f749b9ff-601b-4992-8b51-fc918310ee35",
@@ -47,16 +45,14 @@ checks represents:
 ```
 
 #### Ordered Item
-- Represents a menu item that has been added to a check.
-- Ordered items contains data such as the ```(employee_id, check_id, business_id, menu_id)``` so that you we can reference back to the corresponding entities that relates to the ordered item.
-- ```cost``` is the amount of money that it cost the business to prepare.
-- ```price``` is the amount of money that is charged to the customer.
-- Ordered items can be ```voided```. If and ordered item is voided the value of ```price``` of this item is not computed into the total of the check.
-- Ordered items contains the cost of the related menu item at the time an item was ordered and added to a check.
+A menu item that has been added to a check.
+- Ordered items contains data such as the `(employee_id, check_id, business_id, menu_id)` so that we can reference back to the corresponding entities that relates to the ordered item.
+- `cost` is the amount of money that it cost the business to prepare the item.
+- `price` is the amount of money that is charged to the customer.
+- Ordered items can be `voided`. If and ordered item is voided the value of `price` of this item is not computed into the total of the check.
 
-You can think of an ordered item as a snapshot in time of a menu item added to a check.
-Ordered items are used to calculate sales related metrics,
-Ordered items are used to calculate menu item cost & performance metrics as well. 
+You can think of an ordered item as a snapshot in time of a menu item added to a check - even if the cost or price changes at some point in the future, this will not affect ordered items in the past.
+Ordered items are used to calculate metrics for sales and cost reports.
 
 ```json
 {
@@ -75,10 +71,9 @@ Ordered items are used to calculate menu item cost & performance metrics as well
 ```  
 
 ### Menu Items
-menu items represents:
-- some food or beverage that can be order and added to a check as an ordered item as seen above under check.
-- ```cost``` is the amount that it cost the business to make prepare the a menu item.
-- ```price``` is the amount that is charged to the customer.
+An individual food or beverage that will appear on a check as an ordered item.
+- `cost` is the current amount that it will cost the business to make prepare the a menu item.
+- `price` is the current amount that will be charged to the customer.
 ```json
 {
      "id":"a7c9f9f0-4936-4a4a-88d7-f9f76ebce1bd",
@@ -92,8 +87,7 @@ menu items represents:
 ```
   
 ### Employees
-employees represents
-- individual who is employed at a business.
+An individual employee at a business.
 - employees work at one business.
 - employees have labor entries indicating the time worked.
 ```json
@@ -110,8 +104,8 @@ employees represents
 ```
     
 ### Labor Entries
-labor entries represents:
-- a ```clock_in``` time and ```clock_out``` time for a given employee including the employee ```pay_rate```.
+Represents the time and cost for an employee's shift.
+- includes `clock_in` and `clock_out` time for a given employee, and the employee's `pay_rate`.
 ```json
 {
     "id": "feb99737-83e5-4989-98ad-e8ad3ad228d7",
@@ -147,8 +141,8 @@ Labor entries are used to calculate labor related reports.
 
 #### Food Cost Percentage 
  - Abbreviated as **FCP**
-  - Food cost percentage is the difference between what it costs to produce an item and its price on the menu. 
-  - Calculate food cost percentage: **Food Cost Percentage = Item Cost / Selling Prices**
+ - Food cost percentage is the difference between what it costs to produce an item and its price on the menu. 
+ - Calculate food cost percentage: **Food Cost Percentage = Item Cost / Selling Prices**
   
       Here’s an example: 
       
@@ -170,21 +164,18 @@ Labor entries are used to calculate labor related reports.
      Employee Gross Sales = $13 + $7
      
      Employee Gross Sales = $20
-     
 
-
-## Exercise
+## Exercise Requirements:
 - Extract all data from the POS API. [POS API Documentation](#pos-api-documentation)
     - The api endpoints are documented below. 
     - There are a fixed number of businesses with a fixed number of menu items, employees, labor entries, checks and ordered items.
-    - You will need to persist this data in a database of persistence layer of your choice.
+    - You will need to persist this data in a database or persistence layer of your choice.
     
-- You will need to develop a model for reporting and aggregation. 
-  The [report types](#report-types) that you will need to calculate are provided above along with the corresponding formula for calculating it. [Report Types](#report-types)
-
-API users will be consuming your Reporting API to build our reporting dashboard.
+- Develop a model for reporting and aggregation. 
+    - The [report types](#report-types) that you will need to calculate are provided above along with the corresponding formula for calculating it. [Report Types](#report-types)
+    - API consumers will use your Reporting API to build their reporting dashboard.
       
-- You will need to develop the http Reporting API which is documented below. [Reporting API Documentation](#reporting-data-api-documentation) 
+- Develop the http Reporting API which is documented below. [Reporting API Documentation](#reporting-data-api-documentation) 
     - Some Assertions         
         - Each business has a ```hours``` property and is open every day. All checks and labor will be within these business hours. 
         - Each check is associated with one and only one business and employee.
@@ -194,7 +185,7 @@ API users will be consuming your Reporting API to build our reporting dashboard.
         - Each ordered item has a set boolean property ```voided``` indicating if the check is voided. 
         - Each ordered item has a ```created_at``` date. created_at is to be used when calculating reports.
         
-Given a start and end dates, a business id, a report type, and a time interval you will need to calculate the report for the report type, constrained by start date, end date and business_id, aggregated by the time interval.
+Given start and end dates, a business id, a report type, and a time interval, you will need to calculate the report for the report type over this date range and aggregated by the time interval.
 
 ## Expectations:
 - You may use any language, library, database, and framework that you wish. Ultimately, you should choose whatever tools will best enable you to deliver a quality product.
@@ -217,7 +208,7 @@ Given a start and end dates, a business id, a report type, and a time interval y
 ## API Bugs
 If you are reading this then you are one of the first people to do this code exercise and there are probably bugs in the API!
 
-If you come across a bug, please help us out and [file an issue](https://github.com/AveroLLC/reporting-api-exercise/issues).
+If you come across a bug, please help us out and [file an issue](https://github.com/AveroLLC/reporting-api-exercise/issues), or contact your recruiter directly.
 
 # POS API DOCUMENTATION
 
