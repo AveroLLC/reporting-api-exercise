@@ -160,7 +160,7 @@ Labor entries are used to calculate labor related reports.
 
 ## Connecting
 All URIs in this document have the following base:
-```https://AVOS-api.herokuapp.com```
+`https://secret-lake-26389.herokuapp.com`
 
 ## Content-Type
 Any data in request or response bodies should be JSON.
