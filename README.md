@@ -7,7 +7,7 @@ Your task is to build a reporting API on top of point of sale data extracted fro
 
 ## Business Requirements:
 - Deliver an http-based reporting api that implements a single `/reporting` endpoint
-    - A consumer should be able to provide a date range, a bucketing time interval, a business id, and a report type (defined below).
+    - A consumer should be able to provide a date range, a bucketing time interval, a business id, and a report type ([defined below](#report-types).
     - The api should return a report, calculated from the source POS data.
 - The reporting API should not spam the source api for each request.
     - POS data should be extracted from the source API and stored separately - this could be in a reporting database, flat files, or in an in-memory data structure.
@@ -158,7 +158,7 @@ Labor entries are used to calculate labor related reports.
        
 ## Report Types
 
-These are the techical definitions of the reports that your api will need to implement
+These are the technical definitions of the reports that your api will need to implement
 
 ### Labor Cost Percentage
  - Abbreviated as **LCP**
@@ -384,9 +384,9 @@ Supports the following query parameters, all of which are required.
 - **end** (date) - The end date used to constrain the results. ISO-8601 date.
 
 ### Report Type Abbreviations
-- [Labor Cost Percentage = **LCP**](#Labor-Cost-Percentage)
-- [Food Cost Percentage = **FCP**](#Food-Cost-Percentage )
-- [Employee Gross Sales = **EGS**](#Employee-Gross-Sales ) 
+- [Labor Cost Percentage = **LCP**](#labor-cost-percentage)
+- [Food Cost Percentage = **FCP**](#food-cost-percentage )
+- [Employee Gross Sales = **EGS**](#employee-gross-sales ) 
 
 ### LCP:
 example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
