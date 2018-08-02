@@ -7,7 +7,7 @@ Your task is to build a reporting API on top of point of sale data extracted fro
 
 ## Business Requirements:
 - Deliver an http-based reporting api that implements a single `/reporting` endpoint
-    - A consumer should be able to provide a date range, a bucketing time interval, a business id, and a report type ([defined below](#report-types).
+    - A consumer should be able to provide a date range, a bucketing time interval, a business id, and a report type ([defined below](#report-types)).
     - The api should return a report, calculated from the source POS data.
 - The reporting API should not spam the source api for each request.
     - POS data should be extracted from the source API and stored separately - this could be in a reporting database, flat files, or in an in-memory data structure.
@@ -155,51 +155,7 @@ You can think of an labor entry as a work shift and the given rate of pay at the
 
 Labor entries are used to calculate labor related reports. 
          
-       
-## Report Types
-
-These are the technical definitions of the reports that your api will need to implement
-
-### Labor Cost Percentage
- - Abbreviated as **LCP**
- - Labor cost percentage is the percentage of your revenue that pays for labor. 
- - Calculate labor cost percentage: **Labor Cost Percentage = Labor / Sales**
  
-     Here’s an example: 
-      
-     Let’s say you’ve added all money paid out to hourly employees over a week. 
-     The total was $5,500. During that same time period, you brought in $22,000 worth of revenue. 
-       
-     Labor Cost Percentage = $5,500 / $22,000
-      
-     Labor Cost Percentage = 25%
-
-### Food Cost Percentage 
- - Abbreviated as **FCP**
- - Food cost percentage is the difference between what it costs to produce an item and its price on the menu. 
- - Calculate food cost percentage: **Food Cost Percentage = Item Cost / Selling Prices**
-  
-      Here’s an example: 
-      
-      A burger is priced at $13 and costs $4 to make.
-     
-      Food Cost Percentage = $4 / $13
-      
-      Food Cost Percentage = 31% 
-
-### Employee Gross Sales
- - Abbreviated as **EGS**
- - Employee gross sales is the sum of the of the price charged for each item the employee sold. Voided Items excluded.
- - Calculate employee gross sales: **Employee Gross Sales = Sum(Selling Prices)**
- 
-     Here’s an example:
-     
-     A burger is priced at $13 and a shake $7.
-     
-     Employee Gross Sales = $13 + $7
-     
-     Employee Gross Sales = $20
-
 # POS API DOCUMENTATION
 
 ## Connecting
@@ -370,6 +326,53 @@ example response body:
    ]
 }   
 ```
+
+      
+      
+## Report Types
+
+These are the technical definitions of the reports that your api will need to implement
+
+### Labor Cost Percentage
+ - Abbreviated as **LCP**
+ - Labor cost percentage is the percentage of your revenue that pays for labor. 
+ - Calculate labor cost percentage: **Labor Cost Percentage = Labor / Sales**
+ 
+     Here’s an example: 
+      
+     Let’s say you’ve added all money paid out to hourly employees over a week. 
+     The total was $5,500. During that same time period, you brought in $22,000 worth of revenue. 
+       
+     Labor Cost Percentage = $5,500 / $22,000
+      
+     Labor Cost Percentage = 25%
+
+### Food Cost Percentage 
+ - Abbreviated as **FCP**
+ - Food cost percentage is the difference between what it costs to produce an item and its price on the menu. 
+ - Calculate food cost percentage: **Food Cost Percentage = Item Cost / Selling Prices**
+  
+      Here’s an example: 
+      
+      A burger is priced at $13 and costs $4 to make.
+     
+      Food Cost Percentage = $4 / $13
+      
+      Food Cost Percentage = 31% 
+
+### Employee Gross Sales
+ - Abbreviated as **EGS**
+ - Employee gross sales is the sum of the of the price charged for each item the employee sold. Voided Items excluded.
+ - Calculate employee gross sales: **Employee Gross Sales = Sum(Selling Prices)**
+ 
+     Here’s an example:
+     
+     A burger is priced at $13 and a shake $7.
+     
+     Employee Gross Sales = $13 + $7
+     
+     Employee Gross Sales = $20
+
 
 ## Technical Requirements
 
