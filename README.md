@@ -392,7 +392,7 @@ Supports the following query parameters, all of which are required.
 - [Employee Gross Sales = **EGS**](#employee-gross-sales ) 
 
 ### LCP:
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
+example uri: ```/reporting?business_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
 
 example response body of LCP by hour:
 ```json
@@ -425,7 +425,7 @@ example response body of LCP by hour:
 }
 ```
 
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=day&start=2018-05-01T00:00:00.000Z&end=2018-05-02T00:00:00.000Z```
+example uri: ```/reporting?business_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=LCP&timeInterval=day&start=2018-05-01T00:00:00.000Z&end=2018-05-02T00:00:00.000Z```
 
 example response body of LCP by day:    
 ```json
@@ -445,7 +445,7 @@ example response body of LCP by day:
 ```
 
 ### FCP:
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=FCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
+example uri: ```/reporting?business_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=FCP&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
 
 example response body of FCP by hour:
 ```json
@@ -483,7 +483,7 @@ example response body of FCP by hour:
 
 ### EGS:
 
-example uri: ```/reporting?busisness_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=EGS&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
+example uri: ```/reporting?business_id=f21c2579-b95e-4a5b-aead-a3cf9d60d43b&report=EGS&timeInterval=hour&start=2018-05-03T15:00:00.000Z&end=2018-05-03T18:00:00.000Z```
 
 example response body of EGS by hour:
 ```json
