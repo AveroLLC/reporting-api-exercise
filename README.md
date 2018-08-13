@@ -381,7 +381,7 @@ You are responsible for implementing and delivering a reporting api that meets t
 ### GET /reporting
 Supports the following query parameters, all of which are required.
 - **business_id** (uuid) - The id of the business to run this report for.
-- **report** (LCP | FCP | SBE) - The abbreviated name of the report to run.
+- **report** (LCP | FCP | EGS) - The abbreviated name of the report to run.
 - **timeInterval** (hour | day | week | month) - The time interval to aggregate the data.
 - **start** (date) - The start date used to constrain the results. ISO-8601 date
 - **end** (date) - The end date used to constrain the results. ISO-8601 date.
