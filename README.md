@@ -124,14 +124,13 @@ An individual employee at a business.
 - employees have labor entries indicating the time worked.
 ```json
 {
-     "id":"f749b9ff-601b-4992-8b51-fc918310ee35",
-     "business_id":"b2aeb27b-c85c-4ad8-83d4-d9511063d418",
-     "employee_id":"b63d9159-b2f9-4fd0-bb53-5dfeaee89e85",
-     "name":"Andy Bolden",
-     "closed":true,
-     "closed_at":"2018-04-01T17:35:00.000Z",
-     "updated_at":"2018-07-31T00:56:16.972Z",
-     "created_at":"2018-04-01T17:03:00.000Z"
+    "id": "b63d9159-b2f9-4fd0-bb53-5dfeaee89e85",
+    "business_id": "f21c2579-b95e-4a5b-aead-a3cf9d60d43b",
+    "first_name": "Andy",
+    "last_name": "Bolden",
+    "pay_rate": 11,
+    "updated_at": "2018-07-27T16:43:42.746Z",
+    "created_at": "2018-07-27T16:43:42.746Z"
 }
 ```
     
